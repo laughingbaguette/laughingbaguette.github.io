@@ -1,0 +1,346 @@
+<html><head><base href="/" />
+<meta charset="UTF-8"><title>Juche Connect - DPRK's Official Communication Platform</title>
+<style>
+:root {
+  --primary: #EE1F1F;
+  --secondary: #1F1F1F;
+  --bg: #2F2F2F;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: #fff;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  height: 100vh;
+}
+
+.sidebar {
+  background: var(--secondary);
+  padding: 1rem;
+  border-right: 2px solid var(--primary);
+}
+
+.main-content {
+  padding: 1rem;
+}
+
+.channel-list {
+  list-style: none;
+}
+
+.channel {
+  padding: 0.5rem;
+  margin: 0.25rem 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.channel:hover {
+  background: var(--primary);
+}
+
+.channel.active {
+  background: var(--primary);
+}
+
+.message-area {
+  height: calc(100vh - 120px);
+  background: #363636;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.message {
+  background: var(--secondary);
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border-radius: 4px;
+  border-left: 4px solid var(--primary);
+}
+
+.message.banned {
+  background: #4a1f1f;
+  opacity: 0.7;
+  text-decoration: line-through;
+}
+
+.input-area {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+input {
+  flex: 1;
+  padding: 0.75rem;
+  background: var(--secondary);
+  border: 2px solid var(--primary);
+  border-radius: 4px;
+  color: #fff;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #cc1f1f;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+}
+
+.user-list {
+  list-style: none;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  margin: 0.25rem 0;
+  border-radius: 4px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="sidebar">
+    <div class="header">
+      <svg class="logo" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="#EE1F1F"/>
+        <path d="M30 50 L50 30 L70 50 L50 70 Z" fill="#FFF"/>
+      </svg>
+      <h2>Juche Connect</h2>
+    </div>
+    <ul class="channel-list">
+      <li class="channel active" data-channel="party-announcements"># party-announcements</li>
+      <li class="channel" data-channel="agricultural-updates"># agricultural-updates</li>
+      <li class="channel" data-channel="military-parade-planning"># military-parade-planning</li>
+      <li class="channel" data-channel="revolutionary-songs"># revolutionary-songs</li>
+      <li class="channel" data-channel="approved-haircuts"># approved-haircuts</li>
+    </ul>
+  </div>
+  
+  <div class="main-content">
+    <div class="header">
+      <h2># party-announcements</h2>
+    </div>
+    <div class="message-area">
+      <div class="message">
+        <strong>Supreme Leader</strong>
+        <p>Welcome to Juche Connect, the official communication platform of our great nation!</p>
+      </div>
+    </div>
+    <div class="input-area">
+      <input type="text" placeholder="Share your thoughts (moderated)">
+      <button>Send</button>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <h3>Online Citizens</h3>
+    <ul class="user-list">
+      <li class="user">
+        <div class="user-avatar">SL</div>
+        Supreme Leader
+      </li>
+      <li class="user">
+        <div class="user-avatar">PR</div>
+        Party Representative
+      </li>
+      <li class="user">
+        <div class="user-avatar">AG</div>
+        Agricultural General
+      </li>
+      <li class="user">
+        <div class="user-avatar">WK</div>
+        Worker Kim
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const sendButton = document.querySelector('button');
+const input = document.querySelector('input');
+const messageArea = document.querySelector('.message-area');
+const channels = document.querySelectorAll('.channel');
+const headerTitle = document.querySelector('.header h2');
+
+// Channel-specific messages storage
+let channelMessages = {
+  'party-announcements': [
+    { user: 'Supreme Leader', message: 'Welcome to Juche Connect, the official communication platform of our great nation!' }
+  ],
+  'agricultural-updates': [
+    { user: 'Agricultural General', message: 'Today\'s farming quota has been exceeded by 150%!' },
+    { user: 'Party Representative', message: 'Excellent work in the fields, comrades!' }
+  ],
+  'military-parade-planning': [
+    { user: 'Supreme Leader', message: 'The annual parade planning begins now.' },
+    { user: 'Defense Minister', message: 'All units report readiness status.' }
+  ],
+  'revolutionary-songs': [
+    { user: 'Culture Minister', message: 'New approved songs have been added to the repertoire.' },
+    { user: 'Choir Leader', message: 'Practice sessions are scheduled for tomorrow.' }
+  ],
+  'approved-haircuts': [
+    { user: 'Style Committee', message: 'The official haircut catalog has been updated.' },
+    { user: 'Supreme Leader', message: 'Remember, proper hairstyles reflect proper thoughts.' }
+  ]
+};
+
+const bannedPhrases = [
+  'bad',
+  'terrible',
+  'horrible',
+  'worst',
+  'hate',
+  'awful',
+  'poor',
+  'fake',
+  'propaganda',
+  'dictatorship'
+];
+
+let userBanned = false;
+let currentChannel = 'party-announcements';
+
+// Function to display channel messages
+function displayChannelMessages(channelName) {
+  messageArea.innerHTML = '';
+  channelMessages[channelName].forEach(msg => {
+    const messageElement = document.createElement('div');
+    messageElement.className = 'message';
+    if (msg.banned) {
+      messageElement.classList.add('banned');
+    }
+    messageElement.innerHTML = `
+      <strong>${msg.user}</strong>
+      <p>${msg.message}</p>
+      ${msg.banned ? '<p><em>User has been banned for anti-state behavior</em></p>' : ''}
+    `;
+    messageArea.appendChild(messageElement);
+  });
+  messageArea.scrollTop = messageArea.scrollHeight;
+}
+
+// Channel switching functionality
+channels.forEach(channel => {
+  channel.addEventListener('click', () => {
+    if (!userBanned) {
+      channels.forEach(ch => ch.classList.remove('active'));
+      channel.classList.add('active');
+      currentChannel = channel.dataset.channel;
+      headerTitle.textContent = `# ${currentChannel}`;
+      displayChannelMessages(currentChannel);
+    }
+  });
+});
+
+sendButton.addEventListener('click', () => {
+  const message = input.value.trim();
+  
+  if (message && !userBanned) {
+    const containsBannedPhrase = bannedPhrases.some(phrase => 
+      message.toLowerCase().includes(phrase.toLowerCase())
+    );
+
+    const newMessage = {
+      user: 'Citizen',
+      message: message,
+      banned: containsBannedPhrase
+    };
+
+    // Add message to channel storage
+    channelMessages[currentChannel].push(newMessage);
+
+    // Display the message
+    const messageElement = document.createElement('div');
+    messageElement.className = 'message';
+    if (containsBannedPhrase) {
+      messageElement.classList.add('banned');
+      userBanned = true;
+      setTimeout(() => {
+        input.disabled = true;
+        input.placeholder = 'You have been banned for anti-state behavior';
+        sendButton.disabled = true;
+      }, 1000);
+    }
+    
+    messageElement.innerHTML = `
+      <strong>${newMessage.user}</strong>
+      <p>${newMessage.message}</p>
+      ${containsBannedPhrase ? '<p><em>User has been banned for anti-state behavior</em></p>' : ''}
+    `;
+    
+    messageArea.appendChild(messageElement);
+    messageArea.scrollTop = messageArea.scrollHeight;
+    input.value = '';
+  }
+});
+
+input.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    sendButton.click();
+  }
+});
+
+// Add random "user typing" indicators
+setInterval(() => {
+  if (!userBanned) {
+    const users = ['Agricultural General', 'Party Representative', 'Supreme Leader'];
+    const randomUser = users[Math.floor(Math.random() * users.length)];
+    headerTitle.innerHTML = `# ${currentChannel} ${randomUser} is composing a message...`;
+    
+    setTimeout(() => {
+      headerTitle.innerHTML = `# ${currentChannel}`;
+    }, 2000);
+  }
+}, 10000);
+
+// Initial display of messages
+displayChannelMessages(currentChannel);
+</script>
+</body></html>
